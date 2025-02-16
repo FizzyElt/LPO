@@ -1,0 +1,4 @@
+(executables
+ (public_names main approx_pi cardioid mandelbrot sieve plot copy_file)
+ (names main approx_pi cardioid mandelbrot sieve plot copy_file)
+ (libraries lpo graphics))
