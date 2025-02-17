@@ -1,4 +1,30 @@
 (executables
- (public_names main approx_pi cardioid mandelbrot sieve plot copy_file)
- (names main approx_pi cardioid mandelbrot sieve plot copy_file)
+ (public_names
+  main
+  approx_pi
+  cardioid
+  mandelbrot
+  sieve
+  plot
+  copy_file
+  draw
+  radix
+  tac
+  turtle)
+ (names
+  main
+  approx_pi
+  cardioid
+  mandelbrot
+  sieve
+  plot
+  copy_file
+  draw
+  radix
+  tac
+  turtle)
  (libraries lpo graphics))
+
+(env
+ (dev
+  (flags :standard -warn-error -27-32)))
