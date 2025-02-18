@@ -10,7 +10,10 @@
   draw
   radix
   tac
-  turtle)
+  turtle
+  music
+  quad
+  queens)
  (names
   main
   approx_pi
@@ -22,9 +25,12 @@
   draw
   radix
   tac
-  turtle)
+  turtle
+  music
+  quad
+  queens)
  (libraries lpo graphics))
 
 (env
  (dev
-  (flags :standard -warn-error -27-32)))
+  (flags :standard -warn-error -27-32-37)))
