@@ -5,10 +5,15 @@ let height = 800
 let k = 100
 let norm2 x y = (x *. x) +. (y *. y)
 
+let get_color n = rgb (n mod 256) (n mod 256) (n mod 256)
+
 let mandelbrot a b =
   let rec mandel_rec x y i =
-    if i = k || norm2 x y > 4.
-    then i = k
+    let base = norm2 x y in
+    if i = k || base > 4.
+    then (
+      set_color (get_color (truncate (base *. 300.)));
+      i = k)
     else (
       let x' = (x *. x) -. (y *. y) +. a in
       let y' = (2. *. x *. y) +. b in
