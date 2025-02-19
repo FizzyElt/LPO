@@ -30,13 +30,16 @@ module ResizeableArray : ResizeableArray = struct
   let resize a s =
     if s <= a.size
     then Array.fill a.data s (a.size - s) a.default
-    else (
+    else begin
       let n = Array.length a.data in
       if s > n
-      then (
+      then begin
         let n' = max (2 * n) s in
         let a' = Array.make n' a.default in
         Array.blit a.data 0 a' 0 a.size;
-        a.data <- a'))
+        a.data <- a'
+      end
+    end;
+    a.size <- s
   ;;
 end

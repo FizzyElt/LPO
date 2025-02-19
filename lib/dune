@@ -1,3 +1,7 @@
 (library
  (name lpo)
- (modules resizeable_array))
+ (modules resizeable_array bit_vectors))
+
+(env
+ (dev
+  (flags :standard -warn-error -27-32-37)))
