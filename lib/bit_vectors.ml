@@ -67,7 +67,16 @@ module BitVectors : Bitv = struct
     r
   ;;
 
-  let ntz x = failwith "not implemented"
+  let ntz x =
+    let rec count_zeros n count =
+      if n land 1 = 1
+      then count
+      else begin
+        count_zeros (n lsr 1) (count + 1)
+      end
+    in
+    count_zeros x 0
+  ;;
 
   let iter_true f v =
     Array.iteri
@@ -84,4 +93,17 @@ module BitVectors : Bitv = struct
          visit ei)
       v.bits
   ;;
+
+  let pop x =
+    let rec count n x =
+      if x = 0
+      then n
+      else begin
+        count (n + 1) (x - (x land -x))
+      end
+    in
+    count 0 x
+  ;;
+
+  let cardinal v = Array.fold_left (fun n x -> n + pop x) 0 v.bits
 end
