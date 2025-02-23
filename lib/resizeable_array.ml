@@ -16,9 +16,13 @@ module ResizeableArray : ResizeableArray = struct
     }
   let length a = a.size
 
-  let make n d = { default = d; size = n; data = Array.make n d; increment = None }
+  let make n d =
+    { default = d; size = n; data = Array.make n d; increment = None }
+  ;;
 
-  let create n d s = { default = d; size = n; data = Array.make n d; increment = s }
+  let create n d s =
+    { default = d; size = n; data = Array.make n d; increment = s }
+  ;;
 
   let get a i =
     if i < 0 || i >= a.size then invalid_arg "get";

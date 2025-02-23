@@ -1,6 +1,6 @@
 (library
  (name lpo)
- (modules resizeable_array bit_vectors ropes))
+ (modules resizeable_array bit_vectors ropes persistent_array))
 
 (env
  (dev
