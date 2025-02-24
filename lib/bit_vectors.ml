@@ -106,4 +106,24 @@ module BitVectors : Bitv = struct
   ;;
 
   let cardinal v = Array.fold_left (fun n x -> n + pop x) 0 v.bits
+
+  let blit_bits x i n v j =
+    let shift_r = i in
+    let shift_l = max (bpi + 1 - (i + n)) 0 in
+    let copy_mask = (((x lsr shift_r) lsl shift_r) lsl shift_l) lsr shift_l in
+    let copy_mask =
+      if i < j
+      then copy_mask lsl (j - i)
+      else if i > j
+      then copy_mask lsr (i - j)
+      else copy_mask
+    in
+
+    let shift_r = j in
+    let shift_l = max (bpi + 1 - (j + n)) 0 in
+    let v_mask = (((v lsr shift_r) lsl shift_r) lsl shift_l) lsr shift_l in
+    let v_mask = v_mask lxor v in
+
+    v_mask lor copy_mask
+  ;;
 end
