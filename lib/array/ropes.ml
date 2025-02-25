@@ -13,6 +13,8 @@ module type ROPE = sig
   module S : STRING
   include STRING with type char = S.char
 
+  val small_length : int
+
   val of_string : S.t -> t
   val set : t -> int -> char -> t
   val delete_char : t -> int -> t
@@ -20,7 +22,11 @@ module type ROPE = sig
   val insert : t -> int -> t -> t
 end
 
-module Make (X : STRING) : ROPE with module S = X = struct
+module type SmallLength = sig
+  val small_length : int
+end
+
+module Make (X : STRING) (C : SmallLength) : ROPE with module S = X = struct
   module S = X
 
   type char = S.char
@@ -52,7 +58,7 @@ module Make (X : STRING) : ROPE with module S = X = struct
     unsafe_get t i
   ;;
 
-  let small_length = 256
+  let small_length = C.small_length
 
   let append_string s1 ofs1 len1 s2 ofs2 len2 =
     Str (S.append (S.sub s1 ofs1 len1) (S.sub s2 ofs2 len2), 0, len1 + len2)
@@ -113,5 +119,19 @@ module Make (X : STRING) : ROPE with module S = X = struct
     let n = length t in
     if i < 0 || i >= n then invalid_arg "delete_char";
     sub t 0 i ++ sub t (i + 1) (n - i - 1)
+  ;;
+
+  let delete_char t i =
+    let n = length t in
+    if i < 0 || i >= n then invalid_arg "delete_char";
+    sub t 0 i ++ sub t (i + 1) (n - i - 1)
+  ;;
+
+  let rec iter_leaves f t =
+    match t with
+    | Str (s, ofs, len) -> f s ofs len
+    | App (t1, t2, _) ->
+      iter_leaves f t1;
+      iter_leaves f t2
   ;;
 end
