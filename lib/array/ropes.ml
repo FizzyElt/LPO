@@ -26,7 +26,7 @@ module type SmallLength = sig
   val small_length : int
 end
 
-module Make (X : STRING) (C : SmallLength) : ROPE with module S = X = struct
+module Make (X : STRING) (SL : SmallLength) : ROPE with module S = X = struct
   module S = X
 
   type char = S.char
@@ -58,7 +58,7 @@ module Make (X : STRING) (C : SmallLength) : ROPE with module S = X = struct
     unsafe_get t i
   ;;
 
-  let small_length = C.small_length
+  let small_length = SL.small_length
 
   let append_string s1 ofs1 len1 s2 ofs2 len2 =
     Str (S.append (S.sub s1 ofs1 len1) (S.sub s2 ofs2 len2), 0, len1 + len2)
@@ -105,13 +105,49 @@ module Make (X : STRING) (C : SmallLength) : ROPE with module S = X = struct
   let set t i c =
     let n = length t in
     if i < 0 || i >= n then invalid_arg "set";
-    sub t 0 i ++ make 1 c ++ sub t (i + 1) (n - i - 1)
+    let ( ++ ) = S.append in
+    let rec loop t =
+      match t with
+      | App (t1, t2, len) -> App (loop t1, loop t2, len)
+      | Str (s, ofs, len) ->
+        if i < ofs || i >= ofs + len
+        then Str (s, ofs, len)
+        else begin
+          let new_s =
+            S.sub s 0 (i - ofs) ++ S.make 1 c ++ S.sub s (i - ofs + 1) len
+          in
+          Str (new_s, ofs, len)
+        end
+    in
+    loop t
+  ;;
+
+  let rec split_at t i =
+    match t with
+    | Str (s, ofs, len) ->
+      let left = S.sub s ofs i in
+      let right = S.sub s (ofs + i) (len - i) in
+      Str (left, 0, S.length left), Str (right, ofs + i, S.length right)
+    | App (t1, t2, len) ->
+      if i < 0 || i > len then invalid_arg "split_at";
+      let left_len = length t1 in
+      if i = left_len
+      then t1, t2
+      else if i < left_len
+      then (
+        let left1, left2 = split_at t1 i in
+        left1, left2 ++ t2)
+      else begin
+        let right1, right2 = split_at t2 (i - left_len) in
+        t1 ++ right1, right2
+      end
   ;;
 
   let insert t i r =
     let n = length t in
     if i < 0 || i > n then invalid_arg "insert";
-    sub t 0 i ++ r ++ sub t i (n - i)
+    let left, right = split_at t i in
+    left ++ r ++ right
   ;;
 
   let insert_char t i c = insert t i (make 1 c)
@@ -124,7 +160,25 @@ module Make (X : STRING) (C : SmallLength) : ROPE with module S = X = struct
   let delete_char t i =
     let n = length t in
     if i < 0 || i >= n then invalid_arg "delete_char";
-    sub t 0 i ++ sub t (i + 1) (n - i - 1)
+    let ( ++ ) = S.append in
+    let rec loop t i =
+      match t with
+      | Str (s, ofs, len) ->
+        if i < ofs
+        then Str (s, ofs, len)
+        else if i >= ofs + len
+        then Str (s, ofs - 1, len)
+        else Str (S.sub s 0 (i - ofs) ++ S.sub s (i - ofs + 1) len, ofs, len - 1)
+      | App (t1, t2, _) ->
+        let left = loop t1 i in
+        let right = loop t2 i in
+        (match left, right with
+         | Str (_, _, 0), r -> r
+         | l, Str (_, _, 0) -> l
+         | l, r -> App (l, r, length l + length r))
+    in
+
+    loop t i
   ;;
 
   let rec iter_leaves f t =
