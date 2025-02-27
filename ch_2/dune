@@ -29,7 +29,7 @@
   music
   quad
   queens)
- (libraries lpo graphics))
+ (libraries lib graphics))
 
 (env
  (dev
