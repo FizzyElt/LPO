@@ -1,6 +1,12 @@
 (library
  (name lib)
- (modules bit_vectors persistent_array resizeable_array ropes))
+ (modules
+  bit_vectors
+  persistent_array
+  resizeable_array
+  ropes
+  binary_search_tree
+  avl_tree))
 
 (include_subdirs unqualified)
 

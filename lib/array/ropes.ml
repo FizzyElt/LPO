@@ -128,7 +128,7 @@ module Make (X : STRING) (SL : SmallLength) : ROPE with module S = X = struct
       let left = S.sub s ofs i in
       let right = S.sub s (ofs + i) (len - i) in
       Str (left, 0, S.length left), Str (right, ofs + i, S.length right)
-    | App (t1, t2, len) ->
+    | App (t1, t2, len) -> begin
       if i < 0 || i > len then invalid_arg "split_at";
       let left_len = length t1 in
       if i = left_len
@@ -141,6 +141,7 @@ module Make (X : STRING) (SL : SmallLength) : ROPE with module S = X = struct
         let right1, right2 = split_at t2 (i - left_len) in
         t1 ++ right1, right2
       end
+    end
   ;;
 
   let insert t i r =
