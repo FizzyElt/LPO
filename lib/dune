@@ -7,7 +7,9 @@
   ropes
   binary_search_tree
   avl_tree
-  hash_table))
+  hash_table
+  prefix_tree
+  patricia_tree))
 
 (include_subdirs unqualified)
 
