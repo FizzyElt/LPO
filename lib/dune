@@ -6,7 +6,8 @@
   resizeable_array
   ropes
   binary_search_tree
-  avl_tree))
+  avl_tree
+  hash_table))
 
 (include_subdirs unqualified)
 
