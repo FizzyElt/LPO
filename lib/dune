@@ -9,7 +9,9 @@
   avl_tree
   hash_table
   prefix_tree
-  patricia_tree))
+  patricia_tree
+  queues
+  priority_queues))
 
 (include_subdirs unqualified)
 
