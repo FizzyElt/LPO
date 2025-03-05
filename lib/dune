@@ -11,7 +11,10 @@
   prefix_tree
   patricia_tree
   queues
-  priority_queues))
+  priority_queues
+  adjacency_matrix
+  adjacency_list
+  adjacency_dictionaries))
 
 (include_subdirs unqualified)
 
