@@ -1,20 +1,5 @@
 (library
- (name lib)
- (modules
-  bit_vectors
-  persistent_array
-  resizeable_array
-  ropes
-  binary_search_tree
-  avl_tree
-  hash_table
-  prefix_tree
-  patricia_tree
-  queues
-  priority_queues
-  adjacency_matrix
-  adjacency_list
-  adjacency_dictionaries))
+ (name lib))
 
 (include_subdirs unqualified)
 
