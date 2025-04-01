@@ -19,8 +19,8 @@ end
 module Make (X : HashType) : ImperativeSet with type elt = X.t = struct
   type elt = X.t
   type t =
-    { mutable size : int
-    ; mutable buckets : elt list array
+    { mutable size : int;
+      mutable buckets : elt list array
     }
 
   let array_length = 5003

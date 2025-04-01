@@ -1,5 +1,6 @@
-profile = janestreet
-sequence-blank-line = preserve-one
-module-item-spacing=preserve
+profile=janestreet
+break-separators=after
 exp-grouping=preserve
 margin=80
+module-item-spacing=preserve
+sequence-blank-line=preserve-one

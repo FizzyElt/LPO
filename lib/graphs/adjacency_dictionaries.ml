@@ -25,7 +25,7 @@ module Graph (H : Hashtbl.S) = struct
 
   let remove_edge g v1 v2 = E.remove (V.find g v1) v2
 
-  let iter_vertex f g = V.iter(fun v _ -> f v) g
+  let iter_vertex f g = V.iter (fun v _ -> f v) g
   let iter_succ f g v = E.iter (fun w _ -> f w) (V.find g v)
 
   let iter_edge f g = V.iter (fun v s -> E.iter (f v) s) g

@@ -1,6 +1,6 @@
 type t =
-  { rank : int array
-  ; link : int array
+  { rank : int array;
+    link : int array
   }
 
 let create n = { rank = Array.make n 0; link = Array.init n (fun i -> i) }

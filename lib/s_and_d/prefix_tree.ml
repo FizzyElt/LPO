@@ -20,8 +20,8 @@ module Make (L : Letter) : PersistentSet with type elt = L.t list = struct
   type elt = L.t list
 
   type t =
-    { word : bool
-    ; branches : t M.t
+    { word : bool;
+      branches : t M.t
     }
 
   let empty = { word = false; branches = M.empty }
@@ -60,8 +60,8 @@ module Make (L : Letter) : PersistentSet with type elt = L.t list = struct
   ;;
 
   let rec inter t1 t2 =
-    { word = t1.word && t2.word
-    ; branches = inter_branches t1.branches t2.branches
+    { word = t1.word && t2.word;
+      branches = inter_branches t1.branches t2.branches
     }
 
   and inter_branches m1 m2 =

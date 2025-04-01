@@ -9,10 +9,10 @@ end
 
 module ResizeableArray : ResizeableArray = struct
   type 'a t =
-    { default : 'a
-    ; mutable size : int
-    ; mutable data : 'a array
-    ; increment : int option
+    { default : 'a;
+      mutable size : int;
+      mutable data : 'a array;
+      increment : int option
     }
   let length a = a.size
 

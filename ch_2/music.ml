@@ -8,8 +8,8 @@ type note =
   | Si
 
 type pitch =
-  { note : note
-  ; octave : int
+  { note : note;
+    octave : int
   }
 
 type duration =
@@ -21,8 +21,8 @@ type symbol =
   | Rest of duration
 
 type score =
-  { symbols : symbol list
-  ; metronome : int
+  { symbols : symbol list;
+    metronome : int
   }
 
 let frequency { note = n; octave = o } =

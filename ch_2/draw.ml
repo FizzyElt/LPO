@@ -42,7 +42,9 @@ end
 let bounce (x, y) (vx, vy) xp =
   let vx = if x <= Draw.left || x >= Draw.right then -.vx else vx in
   let vy =
-    if (y <= float Draw.thick && x >= xp && x <= xp +. float Draw.paddle) || y >= Draw.up
+    if
+      (y <= float Draw.thick && x >= xp && x <= xp +. float Draw.paddle)
+      || y >= Draw.up
     then -.vy
     else vy
   in

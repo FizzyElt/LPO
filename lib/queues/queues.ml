@@ -1,7 +1,7 @@
 module ImperativeQueue = struct
   type 'a cell =
-    { elt : 'a
-    ; mutable next : 'a cell
+    { elt : 'a;
+      mutable next : 'a cell
     }
 
   type 'a t = 'a cell option ref

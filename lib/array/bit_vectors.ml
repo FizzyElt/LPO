@@ -12,8 +12,8 @@ let max_length = Sys.max_array_length * bpi
 
 module BitVectors : Bitv = struct
   type t =
-    { length : int
-    ; bits : int array
+    { length : int;
+      bits : int array
     }
 
   let length v = v.length
