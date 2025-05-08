@@ -34,3 +34,21 @@ let up z =
 ;;
 
 let rec to_tree z = if z.path = Top then z.tree else to_tree (up z)
+
+let rec leftmost z = function
+  | E -> z
+  | N (l, x, r) -> leftmost (Left (z, x, r)) l
+;;
+
+let rec compare cmp z1 z2 =
+  match z1, z2 with
+  | Top, Top -> 0
+  | Left (z1, x1, r1), Left (z2, x2, r2) ->
+    let c = cmp x1 x2 in
+    if c <> 0 then c else compare cmp (leftmost z1 r1) (leftmost z2 r2)
+  | Top, Left _ -> -1
+  | Left _, Top -> 1
+  | Right _, _ | _, Right _ -> assert false
+;;
+
+let compare_tree cmp t1 t2 = compare cmp (leftmost Top t1) (leftmost Top t2)
