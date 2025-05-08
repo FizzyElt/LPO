@@ -26,3 +26,13 @@ let delete_right z =
   | [] -> invalid_arg "delete_right"
   | _ :: r -> { z with right = r }
 ;;
+
+(* cursor *)
+type 'a enum = 'a list
+
+let start l = l
+
+let step = function
+  | [] -> raise Exit
+  | x :: r -> x, r
+;;

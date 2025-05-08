@@ -52,3 +52,19 @@ let rec compare cmp z1 z2 =
 ;;
 
 let compare_tree cmp t1 t2 = compare cmp (leftmost Top t1) (leftmost Top t2)
+
+(* cursor *)
+type 'a enum =
+  | Top
+  | Left of 'a * 'a tree * 'a enum
+
+let rec leftmost t e =
+  match t with
+  | E -> e
+  | N (l, x, r) -> leftmost l (Left (x, r, e))
+;;
+let start t = leftmost t Top
+let step = function
+  | Top -> raise Exit
+  | Left (x, r, e) -> x, leftmost r e
+;;
