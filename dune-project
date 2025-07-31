@@ -16,6 +16,7 @@
 (documentation https://url/to/documentation)
 
 (package
+ (allow_empty)
  (name lpo)
  (synopsis "A short synopsis")
  (description "A longer description")

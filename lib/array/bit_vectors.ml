@@ -19,11 +19,16 @@ module BitVectors : Bitv = struct
   let length v = v.length
 
   let create n b =
-    let initv = if b then -1 else 0 in
+    let initv =
+      if b then
+        -1
+      else
+        0
+    in
     let q = n / bpi
     and r = n mod bpi in
-    if r = 0
-    then { length = n; bits = Array.make q initv }
+    if r = 0 then
+      { length = n; bits = Array.make q initv }
     else begin
       let a = Array.make (q + 1) initv in
       if b then a.(q) <- (1 lsl r) - 1;
@@ -40,9 +45,10 @@ module BitVectors : Bitv = struct
   let set v n b =
     let i = n / bpi
     and j = n mod bpi in
-    if b
-    then v.bits.(i) <- v.bits.(i) lor (1 lsl j)
-    else v.bits.(i) <- v.bits.(i) land lnot (1 lsl j)
+    if b then
+      v.bits.(i) <- v.bits.(i) lor (1 lsl j)
+    else
+      v.bits.(i) <- v.bits.(i) land lnot (1 lsl j)
   ;;
 
   let inter v1 v2 =
@@ -54,10 +60,10 @@ module BitVectors : Bitv = struct
 
   let normalize v =
     let r = v.length mod bpi in
-    if r > 0
-    then (
+    if r > 0 then (
       let s = Array.length v.bits - 1 in
-      v.bits.(s) <- v.bits.(s) land ((1 lsl r) - 1))
+      v.bits.(s) <- v.bits.(s) land ((1 lsl r) - 1)
+    )
   ;;
 
   let compl v =
@@ -69,8 +75,8 @@ module BitVectors : Bitv = struct
 
   let ntz x =
     let rec count_zeros n count =
-      if n land 1 = 1
-      then count
+      if n land 1 = 1 then
+        count
       else begin
         count_zeros (n lsr 1) (count + 1)
       end
@@ -83,8 +89,7 @@ module BitVectors : Bitv = struct
       (fun i ei ->
          let index = i * bpi in
          let rec visit x =
-           if x <> 0
-           then begin
+           if x <> 0 then begin
              let b = x land -x in
              f (index + ntz b);
              visit (x - b)
@@ -107,8 +112,8 @@ module BitVectors : Bitv = struct
 
   let pop x =
     let rec count n x =
-      if x = 0
-      then n
+      if x = 0 then
+        n
       else begin
         let mask = x land (1 lsl 8) in
         count (n + table_bits.(mask)) (x lsr 8)
@@ -123,11 +128,12 @@ module BitVectors : Bitv = struct
     let mask = ((1 lsl n) - 1) lsl i in
     let copy_mask = x land mask in
     let copy_mask =
-      if i < j
-      then copy_mask lsl (j - i)
-      else if i > j
-      then copy_mask lsr (i - j)
-      else copy_mask
+      if i < j then
+        copy_mask lsl (j - i)
+      else if i > j then
+        copy_mask lsr (i - j)
+      else
+        copy_mask
     in
 
     let mask = ((1 lsl n) - 1) lsl j in
@@ -138,14 +144,14 @@ module BitVectors : Bitv = struct
   ;;
 
   let blit v i v2 j n =
-    if n < 0 || i < 0 || j < 0 || i + n > v.length || j + n > +v2.length
-    then invalid_arg "blit: invalid bit range";
+    if n < 0 || i < 0 || j < 0 || i + n > v.length || j + n > +v2.length then
+      invalid_arg "blit: invalid bit range";
 
     let word_size = Sys.word_size in
 
     let rec loop src_idx dst_idx remaining =
-      if remaining = 0
-      then v2
+      if remaining = 0 then
+        v2
       else begin
         let src_word_idx = src_idx / word_size in
         let src_bit_idx = src_idx mod word_size in
@@ -159,23 +165,25 @@ module BitVectors : Bitv = struct
         in
 
         let src_word =
-          if src_word_idx < Array.length v.bits
-          then v.bits.(src_word_idx)
-          else 0
+          if src_word_idx < Array.length v.bits then
+            v.bits.(src_word_idx)
+          else
+            0
         in
 
         let dst_word =
-          if dst_word_idx < Array.length v2.bits
-          then v2.bits.(dst_word_idx)
-          else 0
+          if dst_word_idx < Array.length v2.bits then
+            v2.bits.(dst_word_idx)
+          else
+            0
         in
 
         let new_word =
           blit_bits src_word src_bit_idx bits_to_process dst_word dst_bit_idx
         in
 
-        if dst_word_idx >= Array.length v2.bits
-        then invalid_arg "blit: destination array too small";
+        if dst_word_idx >= Array.length v2.bits then
+          invalid_arg "blit: destination array too small";
 
         v2.bits.(dst_word_idx) <- new_word;
 
@@ -189,8 +197,8 @@ module BitVectors : Bitv = struct
   ;;
 
   let sub v i n =
-    if n < 0 || i < 0 || i + n > v.length
-    then invalid_arg "sub: invalid bit range";
+    if n < 0 || i < 0 || i + n > v.length then
+      invalid_arg "sub: invalid bit range";
 
     let v2 = create n false in
 

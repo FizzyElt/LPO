@@ -28,22 +28,24 @@ module ImperativePriorityQueue = struct
 
     let get_min h =
       begin
-        if A.length h = 0 then invalid_arg "get_min" else A.get h 0
+        if A.length h = 0 then
+          invalid_arg "get_min"
+        else
+          A.get h 0
       end
     ;;
 
     let rec move_up h x i =
-      if i = 0
-      then A.set h i x
+      if i = 0 then
+        A.set h i x
       else begin
         let fi = (i - 1) / 2 in
         let y = A.get h fi in
-        if X.compare y x > 0
-        then begin
+        if X.compare y x > 0 then begin
           A.set h i y;
           move_up h x fi
-        end
-        else A.set h i x
+        end else
+          A.set h i x
       end
     ;;
 
@@ -53,24 +55,37 @@ module ImperativePriorityQueue = struct
       move_up h x n
     ;;
 
-    let min h l r = if X.compare (A.get h r) (A.get h l) < 0 then r else l
+    let min h l r =
+      if X.compare (A.get h r) (A.get h l) < 0 then
+        r
+      else
+        l
+    ;;
 
     let smallest_node h x i =
       let l = (2 * i) + 1 in
       let n = A.length h in
-      if l >= n
-      then i
+      if l >= n then
+        i
       else begin
         let r = l + 1 in
-        let j = if r < n then min h l r else l in
-        if X.compare (A.get h j) x < 0 then j else i
+        let j =
+          if r < n then
+            min h l r
+          else
+            l
+        in
+        if X.compare (A.get h j) x < 0 then
+          j
+        else
+          i
       end
     ;;
 
     let rec move_down h x i =
       let j = smallest_node h x i in
-      if j = i
-      then A.set h i x
+      if j = i then
+        A.set h i x
       else begin
         A.set h i (A.get h j);
         move_down h x j
@@ -124,9 +139,10 @@ module PersistentPriorityQueue = struct
       match ha, hb with
       | Empty, h | h, Empty -> h
       | Node (la, xa, ra), Node (lb, xb, rb) ->
-        if X.compare xa xb <= 0
-        then Node (ra, xa, merge la hb)
-        else Node (rb, xb, merge lb ha)
+        if X.compare xa xb <= 0 then
+          Node (ra, xa, merge la hb)
+        else
+          Node (rb, xb, merge lb ha)
     ;;
 
     let add x h = merge (Node (Empty, x, Empty)) h

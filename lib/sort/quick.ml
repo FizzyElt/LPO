@@ -24,8 +24,7 @@ let array_partition a l r =
   let p = a.(l) in
   let m = ref l in
   for i = l + 1 to r - 1 do
-    if le a.(i) p
-    then begin
+    if le a.(i) p then begin
       incr m;
       swap a i !m
     end
@@ -35,8 +34,7 @@ let array_partition a l r =
 ;;
 
 let rec quick_rec a l r =
-  if l < r
-  then begin
+  if l < r then begin
     let m = array_partition a l r in
     quick_rec a l m;
     quick_rec a (m + 1) r

@@ -10,14 +10,14 @@ let get_color n = rgb (n mod 256) (n mod 256) (n mod 256)
 let mandelbrot a b =
   let rec mandel_rec x y i =
     let base = norm2 x y in
-    if i = k || base > 4.
-    then (
+    if i = k || base > 4. then (
       set_color (get_color (truncate (base *. 300.)));
-      i = k)
-    else (
+      i = k
+    ) else (
       let x' = (x *. x) -. (y *. y) +. a in
       let y' = (2. *. x *. y) +. b in
-      mandel_rec x' y' (i + 1))
+      mandel_rec x' y' (i + 1)
+    )
   in
   mandel_rec 0. 0. 0
 ;;

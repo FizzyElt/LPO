@@ -1,8 +1,13 @@
-let rec gcd x y = if y = 0 then x else gcd y (x mod y)
+let rec gcd x y =
+  if y = 0 then
+    x
+  else
+    gcd y (x mod y)
+;;
 
 let rec extended_gcd x y =
-  if y = 0
-  then 1, 0, x
+  if y = 0 then
+    1, 0, x
   else begin
     let q = x / y in
     let u, v, g = extended_gcd y (x - (q * y)) in
@@ -11,11 +16,14 @@ let rec extended_gcd x y =
 ;;
 
 let rec exp x n =
-  if n = 0
-  then 1
+  if n = 0 then
+    1
   else begin
     let r = exp x (n / 2) in
-    if n mod 2 = 0 then r * r else r * r * x
+    if n mod 2 = 0 then
+      r * r
+    else
+      r * r * x
   end
 ;;
 
@@ -25,17 +33,26 @@ let () = assert (0 < m && m <= (max_int / 2) + 1)
 
 let of_int x =
   let r = x mod m in
-  if r < 0 then r + m else r
+  if r < 0 then
+    r + m
+  else
+    r
 ;;
 
 let add x y =
   let r = x + y in
-  if r >= m then r - m else r
+  if r >= m then
+    r - m
+  else
+    r
 ;;
 
 let sub x y =
   let r = x - y in
-  if r < 0 then r + m else r
+  if r < 0 then
+    r + m
+  else
+    r
 ;;
 
 let mul x y =
@@ -57,7 +74,13 @@ type matrix = int array array
 
 let init_matrix n m f = Array.init n (fun i -> Array.init m (fun j -> f i j))
 
-let id n = init_matrix n n (fun i j -> if i = j then 1 else 0)
+let id n =
+  init_matrix n n (fun i j ->
+    if i = j then
+      1
+    else
+      0)
+;;
 
 let size a = Array.length a, Array.length a.(0)
 

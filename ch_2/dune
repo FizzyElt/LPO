@@ -1,19 +1,4 @@
 (executables
- (public_names
-  main
-  approx_pi
-  cardioid
-  mandelbrot
-  sieve
-  plot
-  copy_file
-  draw
-  radix
-  tac
-  turtle
-  music
-  quad
-  queens)
  (names
   main
   approx_pi

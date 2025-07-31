@@ -39,7 +39,12 @@ module Make (X : Ordered) : PersistentSet with type elt = X.t = struct
     | Empty -> false
     | Node (l, v, r) ->
       let c = X.compare x v in
-      c = 0 || if c < 0 then mem x l else mem x r
+      c = 0
+      ||
+      if c < 0 then
+        mem x l
+      else
+        mem x r
   ;;
 
   let rec add x t =
@@ -47,11 +52,12 @@ module Make (X : Ordered) : PersistentSet with type elt = X.t = struct
     | Empty -> Node (Empty, x, Empty)
     | Node (l, v, r) ->
       let c = X.compare x v in
-      if c = 0
-      then t
-      else if c < 0
-      then Node (add x l, v, r)
-      else Node (l, v, add x r)
+      if c = 0 then
+        t
+      else if c < 0 then
+        Node (add x l, v, r)
+      else
+        Node (l, v, add x r)
   ;;
 
   let rec remove_min_elt = function
@@ -70,11 +76,12 @@ module Make (X : Ordered) : PersistentSet with type elt = X.t = struct
     | Empty -> Empty
     | Node (l, v, r) ->
       let c = X.compare x v in
-      if c = 0
-      then merge l r
-      else if c < 0
-      then Node (remove x l, v, r)
-      else Node (l, v, remove x r)
+      if c = 0 then
+        merge l r
+      else if c < 0 then
+        Node (remove x l, v, r)
+      else
+        Node (l, v, remove x r)
   ;;
 
   let rec cardinal = function
@@ -107,7 +114,12 @@ module Make (X : Ordered) : PersistentSet with type elt = X.t = struct
     | Empty -> raise Not_found
     | Node (l, v, r) ->
       let c = X.compare x v in
-      if c = 0 then v else if c < 0 then floor x l else right_floor r
+      if c = 0 then
+        v
+      else if c < 0 then
+        floor x l
+      else
+        right_floor r
 
   and right_floor = function
     | Empty -> raise Not_found

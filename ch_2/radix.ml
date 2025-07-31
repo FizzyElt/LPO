@@ -18,10 +18,10 @@ let digit_of_char c =
 ;;
 
 let check_digit d =
-  if d < 0 || d >= base
-  then (
+  if d < 0 || d >= base then (
     Printf.eprintf "invalid digit %d\n" d;
-    exit 1)
+    exit 1
+  )
 ;;
 
 let () =

@@ -26,18 +26,25 @@ let list_heap_sort l =
 
 let rec move_down a k v n =
   let r = (2 * k) + 1 in
-  if r >= n
-  then a.(k) <- v
+  if r >= n then
+    a.(k) <- v
   else (
     let rmax =
-      if r + 1 < n then if lt a.(r) a.(r + 1) then r + 1 else r else r
+      if r + 1 < n then
+        if lt a.(r) a.(r + 1) then
+          r + 1
+        else
+          r
+      else
+        r
     in
-    if le a.(rmax) v
-    then a.(k) <- v
+    if le a.(rmax) v then
+      a.(k) <- v
     else begin
       a.(k) <- a.(rmax);
       move_down a rmax v n
-    end)
+    end
+  )
 ;;
 
 let array_heap_sort a =

@@ -53,8 +53,7 @@ module Make (X : HashType) : ImperativeSet with type elt = X.t = struct
     let n = Array.length h.buckets in
     let i = bucket_of x h in
     let b = h.buckets.(i) in
-    if not (mem_bucket x b)
-    then begin
+    if not (mem_bucket x b) then begin
       h.size <- h.size + 1;
       h.buckets.(i) <- x :: b;
       if h.size > n / 2 then resize h
@@ -64,8 +63,7 @@ module Make (X : HashType) : ImperativeSet with type elt = X.t = struct
   let remove x h =
     let i = bucket_of x h in
     let b = h.buckets.(i) in
-    if mem_bucket x b
-    then begin
+    if mem_bucket x b then begin
       h.size <- h.size - 1;
       h.buckets.(i) <- List.filter (fun y -> not (X.equal x y)) b
     end

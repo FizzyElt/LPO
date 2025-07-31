@@ -3,21 +3,27 @@ let memo = Hashtbl.create 17
 let rec fib_memo n =
   try Hashtbl.find memo n with
   | Not_found ->
-    let fn = if n <= 1 then n else fib_memo (n - 2) + fib_memo (n - 1) in
+    let fn =
+      if n <= 1 then
+        n
+      else
+        fib_memo (n - 2) + fib_memo (n - 1)
+    in
     Hashtbl.add memo n fn;
     fn
 ;;
 
 let fib_dp n =
-  if n = 0
-  then 0
+  if n = 0 then
+    0
   else (
     let f = Array.make (n + 1) 0 in
     f.(1) <- 1;
     for i = 2 to n do
       f.(i) <- f.(i - 2) + f.(i - 1)
     done;
-    f.(n))
+    f.(n)
+  )
 ;;
 
 let memo_rec ff =

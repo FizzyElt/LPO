@@ -5,11 +5,16 @@ module S = Set.Make (struct
 
 let map f s = S.fold (fun x s -> S.add (f x) s) s S.empty
 
-let rec upto n = if n < 0 then S.empty else S.add n (upto (n - 1))
+let rec upto n =
+  if n < 0 then
+    S.empty
+  else
+    S.add n (upto (n - 1))
+;;
 
 let rec count cols d1 d2 =
-  if S.is_empty cols
-  then 1
+  if S.is_empty cols then
+    1
   else
     S.fold
       (fun c res ->

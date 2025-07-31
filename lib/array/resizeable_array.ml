@@ -39,16 +39,18 @@ module ResizeableArray : ResizeableArray = struct
     | None -> max (2 * n) s
     | Some i ->
       let diff = s - n in
-      if diff mod i = 0 then diff + n else (((diff / i) + 1) * i) + n
+      if diff mod i = 0 then
+        diff + n
+      else
+        (((diff / i) + 1) * i) + n
   ;;
 
   let resize a s =
-    if s <= a.size
-    then Array.fill a.data s (a.size - s) a.default
+    if s <= a.size then
+      Array.fill a.data s (a.size - s) a.default
     else begin
       let n = Array.length a.data in
-      if s > n
-      then begin
+      if s > n then begin
         let n' = expand a.increment n s in
         let a' = Array.make n' a.default in
         Array.blit a.data 0 a' 0 a.size;
@@ -56,8 +58,8 @@ module ResizeableArray : ResizeableArray = struct
       end
     end;
     a.size <- s;
-    if a.size < Array.length a.data / 4
-    then a.data <- Array.sub a.data 0 (Array.length a.data / 2)
+    if a.size < Array.length a.data / 4 then
+      a.data <- Array.sub a.data 0 (Array.length a.data / 2)
   ;;
 end
 

@@ -36,7 +36,11 @@ module Make (L : Letter) : PersistentSet with type elt = L.t list = struct
   ;;
   let rec add x t =
     match x with
-    | [] -> if t.word then t else { t with word = true }
+    | [] ->
+      if t.word then
+        t
+      else
+        { t with word = true }
     | i :: l ->
       let b =
         try M.find i t.branches with
@@ -52,7 +56,10 @@ module Make (L : Letter) : PersistentSet with type elt = L.t list = struct
       (try
          let s = remove l (M.find i t.branches) in
          let new_branches =
-           if is_empty s then M.remove i t.branches else M.add i s t.branches
+           if is_empty s then
+             M.remove i t.branches
+           else
+             M.add i s t.branches
          in
          { t with branches = new_branches }
        with
@@ -69,7 +76,10 @@ module Make (L : Letter) : PersistentSet with type elt = L.t list = struct
       (fun i ti m ->
          try
            let t = inter ti (M.find i m2) in
-           if is_empty t then m else M.add i t m
+           if is_empty t then
+             m
+           else
+             M.add i t m
          with
          | Not_found -> m)
       m1
@@ -77,6 +87,9 @@ module Make (L : Letter) : PersistentSet with type elt = L.t list = struct
   ;;
   let rec compare t1 t2 =
     let c = Stdlib.compare t1.word t2.word in
-    if c <> 0 then c else M.compare compare t1.branches t2.branches
+    if c <> 0 then
+      c
+    else
+      M.compare compare t1.branches t2.branches
   ;;
 end

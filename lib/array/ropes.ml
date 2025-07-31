@@ -50,7 +50,10 @@ module Make (X : STRING) (SL : SmallLength) : ROPE with module S = X = struct
     | Str (s, ofs, _) -> S.get s (ofs + i)
     | App (t1, t2, _) ->
       let n1 = length t1 in
-      if i < n1 then unsafe_get t1 i else unsafe_get t2 (i - n1)
+      if i < n1 then
+        unsafe_get t1 i
+      else
+        unsafe_get t2 (i - n1)
   ;;
 
   let get t i =
@@ -82,24 +85,29 @@ module Make (X : STRING) (SL : SmallLength) : ROPE with module S = X = struct
   let ( ++ ) = append
 
   let rec mksub start stop t =
-    if start = 0 && stop = length t
-    then t
+    if start = 0 && stop = length t then
+      t
     else (
       match t with
       | Str (s, ofs, _) -> Str (s, ofs + start, stop - start)
       | App (t1, t2, _) ->
         let n1 = length t1 in
-        if stop <= n1
-        then mksub start stop t1
-        else if start >= n1
-        then mksub (start - n1) (stop - n1) t2
-        else mksub start n1 t1 ++ mksub 0 (stop - n1) t2)
+        if stop <= n1 then
+          mksub start stop t1
+        else if start >= n1 then
+          mksub (start - n1) (stop - n1) t2
+        else
+          mksub start n1 t1 ++ mksub 0 (stop - n1) t2
+    )
   ;;
 
   let sub t ofs len =
     let stop = ofs + len in
     if ofs < 0 || len < 0 || stop > length t then invalid_arg "sub";
-    if len = 0 then empty else mksub ofs stop t
+    if len = 0 then
+      empty
+    else
+      mksub ofs stop t
   ;;
 
   let set t i c =
@@ -110,8 +118,8 @@ module Make (X : STRING) (SL : SmallLength) : ROPE with module S = X = struct
       match t with
       | App (t1, t2, len) -> App (loop t1, loop t2, len)
       | Str (s, ofs, len) ->
-        if i < ofs || i >= ofs + len
-        then Str (s, ofs, len)
+        if i < ofs || i >= ofs + len then
+          Str (s, ofs, len)
         else begin
           let new_s =
             S.sub s 0 (i - ofs) ++ S.make 1 c ++ S.sub s (i - ofs + 1) len
@@ -131,13 +139,12 @@ module Make (X : STRING) (SL : SmallLength) : ROPE with module S = X = struct
     | App (t1, t2, len) -> begin
       if i < 0 || i > len then invalid_arg "split_at";
       let left_len = length t1 in
-      if i = left_len
-      then t1, t2
-      else if i < left_len
-      then (
+      if i = left_len then
+        t1, t2
+      else if i < left_len then (
         let left1, left2 = split_at t1 i in
-        left1, left2 ++ t2)
-      else begin
+        left1, left2 ++ t2
+      ) else begin
         let right1, right2 = split_at t2 (i - left_len) in
         t1 ++ right1, right2
       end
@@ -165,11 +172,12 @@ module Make (X : STRING) (SL : SmallLength) : ROPE with module S = X = struct
     let rec loop t i =
       match t with
       | Str (s, ofs, len) ->
-        if i < ofs
-        then Str (s, ofs, len)
-        else if i >= ofs + len
-        then Str (s, ofs - 1, len)
-        else Str (S.sub s 0 (i - ofs) ++ S.sub s (i - ofs + 1) len, ofs, len - 1)
+        if i < ofs then
+          Str (s, ofs, len)
+        else if i >= ofs + len then
+          Str (s, ofs - 1, len)
+        else
+          Str (S.sub s 0 (i - ofs) ++ S.sub s (i - ofs + 1) len, ofs, len - 1)
       | App (t1, t2, _) ->
         let left = loop t1 i in
         let right = loop t2 i in

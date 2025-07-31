@@ -36,9 +36,10 @@ module Turtle (A : ANGLE) = struct
   let advance d =
     tx := !tx +. (d *. A.cos !angle);
     ty := !ty +. (d *. A.sin !angle);
-    if !draw
-    then lineto (truncate !tx) (truncate !ty)
-    else moveto (truncate !tx) (truncate !ty)
+    if !draw then
+      lineto (truncate !tx) (truncate !ty)
+    else
+      moveto (truncate !tx) (truncate !ty)
   ;;
 end
 

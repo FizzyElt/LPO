@@ -40,13 +40,20 @@ module Draw = struct
 end
 
 let bounce (x, y) (vx, vy) xp =
-  let vx = if x <= Draw.left || x >= Draw.right then -.vx else vx in
+  let vx =
+    if x <= Draw.left || x >= Draw.right then
+      -.vx
+    else
+      vx
+  in
   let vy =
     if
       (y <= float Draw.thick && x >= xp && x <= xp +. float Draw.paddle)
       || y >= Draw.up
-    then -.vy
-    else vy
+    then
+      -.vy
+    else
+      vy
   in
   vx, vy
 ;;
@@ -54,10 +61,10 @@ let bounce (x, y) (vx, vy) xp =
 let new_position (x, y) (vx, vy) = x +. vx, y +. vy
 
 let rec play (x, y) (vx, vy) =
-  if y <= Draw.down
-  then (
+  if y <= Draw.down then (
     Printf.eprintf "Game over!\n";
-    exit 0);
+    exit 0
+  );
   let xp = Draw.game x y in
   let vx, vy = bounce (x, y) (vx, vy) (float xp) in
   let x', y' = new_position (x, y) (vx, vy) in
